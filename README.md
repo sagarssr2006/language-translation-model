@@ -94,7 +94,7 @@ https://language-translation-model-i5bv.onrender.com
 
 ## 🔗 GitHub Repository
 
-[(Add your GitHub link here)](https://github.com/sagarssr2006/language-translation-model)
+(https://github.com/sagarssr2006/language-translation-model)
 
 ---
 
