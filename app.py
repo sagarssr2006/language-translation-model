@@ -1,25 +1,7 @@
 from flask import Flask, render_template, request
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from deep_translator import GoogleTranslator
 
 app = Flask(__name__)
-
-# Model mapping (only loads when needed)
-MODEL_MAP = {
-    "hi": "Helsinki-NLP/opus-mt-en-hi",
-    "fr": "Helsinki-NLP/opus-mt-en-fr",
-    "de": "Helsinki-NLP/opus-mt-en-de"
-}
-
-# Cache loaded models (so it doesn’t reload every time)
-loaded_models = {}
-
-def load_model(lang):
-    if lang not in loaded_models:
-        model_name = MODEL_MAP[lang]
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
-        model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-        loaded_models[lang] = (tokenizer, model)
-    return loaded_models[lang]
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -30,14 +12,8 @@ def index():
         lang = request.form["lang"]
 
         try:
-            tokenizer, model = load_model(lang)
-
-            inputs = tokenizer(text, return_tensors="pt", padding=True)
-            outputs = model.generate(**inputs)
-
-            translation = tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-        except Exception as e:
+            translation = GoogleTranslator(source='auto', target=lang).translate(text)
+        except:
             translation = "Translation error. Try again."
 
     return render_template("index.html", translation=translation)

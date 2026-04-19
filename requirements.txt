@@ -1,5 +1,3 @@
 flask
-transformers
-sentencepiece
+deep-translator
 gunicorn
-torch
